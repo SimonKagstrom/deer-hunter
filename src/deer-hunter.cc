@@ -1,6 +1,10 @@
 #include <Arduino.h>
 #include <USBAPI.h>
 
+#include "pcm.h"
+
+#include "sample.h"
+
 enum
 {
 	SPEAKER_PIN = 12,
@@ -24,7 +28,7 @@ public:
 		switch(m_state)
 		{
 		case STATE_INIT:
-			if (m_time > 10000)
+			if (m_time > 1000)
 				setState(STATE_IDLE);
 			break;
 
@@ -38,7 +42,7 @@ public:
 			break;
 
 		case STATE_MOTION:
-			tone(SPEAKER_PIN, 262, 100);
+			startPlayback(sample, sizeof(sample));
 
 			if (!motion)
 				setState(STATE_IDLE);
@@ -48,10 +52,12 @@ public:
 			break;
 
 		case STATE_WAIT:
-			noTone(SPEAKER_PIN);
-
-			if (m_time - m_motionStart > 8000)
+			if (m_time - m_motionStart > 5000)
+			{
+				stopPlayback();
+				noTone(SPEAKER_PIN);
 				setState(STATE_IDLE);
+			}
 			break;
 		}
 	}
