@@ -1,9 +1,5 @@
-set(ARDUINO_DEFAULT_BOARD uno) # Default Board ID, when not specified
-set(ARDUINO_DEFAULT_PORT /dev/ttyACM0) # Default Port, when not specified
+arduino_cmake_project(deer-hunter BOARD_NAME uno)
 
-#====================================================================#
-# Advanced firwmare example
-#====================================================================#
-generate_arduino_firmware(deer-hunter
-    SRCS deer-hunter.cc
-    BOARD uno)
+add_arduino_executable(deer-hunter deer-hunter.cc)
+
+set_target_upload_port(deer-hunter /dev/ttyACM0)
