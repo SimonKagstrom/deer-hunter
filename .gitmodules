@@ -1,0 +1,3 @@
+[submodule "3rd-party/jeelib"]
+	path = 3rd-party/jeelib
+	url = https://github.com/jeelabs/jeelib.git

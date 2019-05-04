@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include <USBAPI.h>
 
+#include <JeeLib.h>
+
 #include "pcm.h"
 
 #include "sample.h"
@@ -17,7 +19,8 @@ public:
 	DeerHunter() :
 		m_state(STATE_INIT),
 		m_time(0),
-		m_motionStart(0)
+		m_motionStart(0),
+		m_roy(false)
 	{
 	}
 
@@ -42,7 +45,13 @@ public:
 			break;
 
 		case STATE_MOTION:
-			startPlayback(sample, sizeof(sample));
+		{
+			m_roy = !m_roy;
+			if (m_roy)
+				startPlayback(roy, sizeof(roy));
+			else
+				startPlayback(moa, sizeof(moa));
+				
 
 			if (!motion)
 				setState(STATE_IDLE);
@@ -50,7 +59,7 @@ public:
 				setState(STATE_WAIT);
 
 			break;
-
+		}
 		case STATE_WAIT:
 			if (m_time - m_motionStart > 5000)
 			{
@@ -101,6 +110,7 @@ private:
 	enum states m_state;
 	uint64_t m_time;
 	uint64_t m_motionStart;
+	bool m_roy;
 };
 
 DeerHunter *dh;
@@ -114,6 +124,11 @@ void setup(void)
 	dh = new DeerHunter();
 }
 
+ISR(WDT_vect)
+{
+	// See https://hwstartup.wordpress.com/2013/03/11/how-to-run-an-arduino-on-a-9v-battery-for-weeks-or-months/
+	Sleepy::watchdogEvent();
+}
 
 void loop(void)
 {
@@ -121,5 +136,5 @@ void loop(void)
 
 	dh->run(100, motion);
 
-	delay(100);
+	Sleepy::loseSomeTime(100);
 }
