@@ -9,7 +9,6 @@
 
 enum
 {
-	SPEAKER_PIN = 12,
 	MOTION_DETECTOR_TRIGGER_PIN = 13,
 };
 
@@ -37,8 +36,6 @@ public:
 			break;
 
 		case STATE_IDLE:
-			noTone(SPEAKER_PIN);
-
 			if (motion) {
 				m_motionStart = m_time;
 				setState(STATE_MOTION);
@@ -62,7 +59,6 @@ public:
 			if (m_time - m_motionStart > 5000)
 			{
 				stopPlayback();
-				noTone(SPEAKER_PIN);
 				setState(STATE_IDLE);
 				m_isPlaying = false;
 			}
@@ -139,7 +135,6 @@ DeerHunter *dh;
 void setup(void)
 {
 	Serial.begin(9600);
-	pinMode(SPEAKER_PIN, OUTPUT);
 	pinMode(MOTION_DETECTOR_TRIGGER_PIN, INPUT);
 
 	dh = new DeerHunter();
