@@ -18,6 +18,7 @@ class DeerHunter
 public:
 	DeerHunter() :
 		m_state(STATE_INIT),
+		m_isPlaying(false),
 		m_time(0),
 		m_motionStart(0),
 		m_roy(false)
@@ -48,15 +49,12 @@ public:
 		{
 			m_roy = !m_roy;
 			if (m_roy)
-				startPlayback(roy, sizeof(roy));
+;//				startPlayback(roy, sizeof(roy));
 			else
 				startPlayback(moa, sizeof(moa));
-				
+			m_isPlaying = true;
 
-			if (!motion)
-				setState(STATE_IDLE);
-			else
-				setState(STATE_WAIT);
+			setState(STATE_WAIT);
 
 			break;
 		}
@@ -66,9 +64,18 @@ public:
 				stopPlayback();
 				noTone(SPEAKER_PIN);
 				setState(STATE_IDLE);
+				m_isPlaying = false;
 			}
 			break;
 		}
+	}
+
+	void runLoop()
+	{
+		int motion = digitalRead(MOTION_DETECTOR_TRIGGER_PIN);
+
+		run(160, motion);
+		sleep(160);
 	}
 
 private:
@@ -79,6 +86,19 @@ private:
 		STATE_MOTION,
 		STATE_WAIT,
 	};
+
+	void sleep(unsigned ms)
+	{
+		if (m_isPlaying)
+		{
+			delay(ms);
+		}
+		else
+		{
+			Sleepy::loseSomeTime(160);
+		}
+
+	}
 
 	const char *stateToString(enum states state)
 	{
@@ -108,6 +128,7 @@ private:
 	}
 
 	enum states m_state;
+	bool m_isPlaying;
 	uint64_t m_time;
 	uint64_t m_motionStart;
 	bool m_roy;
@@ -132,9 +153,5 @@ ISR(WDT_vect)
 
 void loop(void)
 {
-	int motion = digitalRead(MOTION_DETECTOR_TRIGGER_PIN);
-
-	dh->run(100, motion);
-
-	Sleepy::loseSomeTime(100);
+	dh->runLoop();
 }
