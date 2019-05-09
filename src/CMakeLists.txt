@@ -30,10 +30,6 @@ add_custom_command(
             bark.raw
             moa
         > sample.h
-    COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/bin-to-c-source.py"
-            bark.raw
-            roy
-        >> sample.h
     DEPENDS
         moa.raw
         roy.raw
