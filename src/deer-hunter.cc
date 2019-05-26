@@ -17,7 +17,6 @@ class DeerHunter
 public:
 	DeerHunter() :
 		m_state(STATE_INIT),
-		m_isPlaying(false),
 		m_time(0),
 		m_motionStart(0),
 		m_roy(false)
@@ -49,18 +48,16 @@ public:
 				startPlayback(roy, sizeof(roy));
 //			else
 //				startPlayback(moa, sizeof(moa));
-			m_isPlaying = true;
 
 			setState(STATE_WAIT);
 
 			break;
 		}
 		case STATE_WAIT:
-			if (m_time - m_motionStart > 5000)
+			if (!isPlaying())
 			{
 				stopPlayback();
 				setState(STATE_IDLE);
-				m_isPlaying = false;
 			}
 			break;
 		}
@@ -85,7 +82,7 @@ private:
 
 	void sleep(unsigned ms)
 	{
-		if (m_isPlaying)
+		if (isPlaying())
 		{
 			delay(ms);
 		}
@@ -123,7 +120,6 @@ private:
 	}
 
 	enum states m_state;
-	bool m_isPlaying;
 	uint64_t m_time;
 	uint64_t m_motionStart;
 	bool m_roy;

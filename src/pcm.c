@@ -64,6 +64,7 @@
  * sox audiodump.wav -c 1 -r 8000 -u -b macstartup-8000.wav
  */
 
+volatile int g_isPlaying;
 int speakerPin = 11;
 unsigned char const *sounddata_data=0;
 int sounddata_length=0;
@@ -140,6 +141,7 @@ void startPlayback(unsigned char const *data, int length)
   lastSample = pgm_read_byte(&sounddata_data[sounddata_length-1]);
   sample = 0;
   sei();
+  g_isPlaying = 1;
 }
 
 void stopPlayback()
@@ -154,4 +156,10 @@ void stopPlayback()
   TCCR2B &= ~_BV(CS10);
   
   digitalWrite(speakerPin, LOW);
+  g_isPlaying = 0;
+}
+
+int isPlaying()
+{
+  return g_isPlaying;
 }
