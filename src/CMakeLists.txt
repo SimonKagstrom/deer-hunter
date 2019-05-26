@@ -27,8 +27,8 @@ add_custom_command(
 add_custom_command(
     OUTPUT sample.h
     COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/bin-to-c-source.py"
-            bark.raw
-            moa
+            roy.raw
+            roy
         > sample.h
     DEPENDS
         moa.raw
@@ -42,4 +42,5 @@ add_arduino_executable(deer-hunter
     pcm.c
     sample.h)
 
-set_target_upload_port(deer-hunter /dev/tty.usbmodem1431)
+set_target_upload_port(deer-hunter /dev/tty.usbmodem1421)
+#set_target_upload_port(deer-hunter /dev/cu.usbserial-A601LIRK)

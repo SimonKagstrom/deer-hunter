@@ -9,7 +9,7 @@
 
 enum
 {
-	MOTION_DETECTOR_TRIGGER_PIN = 13,
+	MOTION_DETECTOR_TRIGGER_PIN = 2,
 };
 
 class DeerHunter
@@ -46,9 +46,9 @@ public:
 		{
 			m_roy = !m_roy;
 			if (m_roy)
-;//				startPlayback(roy, sizeof(roy));
-			else
-				startPlayback(moa, sizeof(moa));
+				startPlayback(roy, sizeof(roy));
+//			else
+//				startPlayback(moa, sizeof(moa));
 			m_isPlaying = true;
 
 			setState(STATE_WAIT);
@@ -91,9 +91,8 @@ private:
 		}
 		else
 		{
-			Sleepy::loseSomeTime(160);
+			Sleepy::loseSomeTime(ms);
 		}
-
 	}
 
 	const char *stateToString(enum states state)
