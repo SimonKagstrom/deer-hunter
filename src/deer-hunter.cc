@@ -18,25 +18,23 @@ public:
 	DeerHunter() :
 		m_state(STATE_INIT),
 		m_time(0),
-		m_motionStart(0),
 		m_roy(false)
 	{
 	}
 
-	void run(unsigned int millis, bool motion)
+	void run(unsigned int millis)
 	{
 		m_time += millis;
 
 		switch(m_state)
 		{
 		case STATE_INIT:
-			if (m_time > 1000)
-				setState(STATE_IDLE);
+			setState(STATE_IDLE);
 			break;
 
 		case STATE_IDLE:
-			if (motion) {
-				m_motionStart = m_time;
+			if (m_motion)
+			{
 				setState(STATE_MOTION);
 			}
 			break;
@@ -49,6 +47,7 @@ public:
 //			else
 //				startPlayback(moa, sizeof(moa));
 
+			m_motion = false;
 			setState(STATE_WAIT);
 
 			break;
@@ -65,10 +64,23 @@ public:
 
 	void runLoop()
 	{
-		int motion = digitalRead(MOTION_DETECTOR_TRIGGER_PIN);
+		auto curState = m_state;
+		auto state = curState;
+		int time = 2000;
 
-		run(160, motion);
-		sleep(160);
+		do
+		{
+			run(time);
+			time = 0;
+		} while (state == curState);
+
+		sleep(2000);
+	}
+
+
+	void onMotion()
+	{
+		m_motion = true;
 	}
 
 private:
@@ -121,11 +133,16 @@ private:
 
 	enum states m_state;
 	uint64_t m_time;
-	uint64_t m_motionStart;
 	bool m_roy;
+	volatile bool m_motion{false};
 };
 
 DeerHunter *dh;
+
+void onMotionInterrupt()
+{
+	dh->onMotion();
+}
 
 void setup(void)
 {
@@ -133,6 +150,8 @@ void setup(void)
 	pinMode(MOTION_DETECTOR_TRIGGER_PIN, INPUT);
 
 	dh = new DeerHunter();
+
+	attachInterrupt(digitalPinToInterrupt(MOTION_DETECTOR_TRIGGER_PIN), onMotionInterrupt, CHANGE);
 }
 
 ISR(WDT_vect)
