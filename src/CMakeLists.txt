@@ -1,6 +1,7 @@
-arduino_cmake_project(deer-hunter BOARD_NAME uno)
+#arduino_cmake_project(deer-hunter BOARD_NAME uno)
 
-get_board_id(board_id uno atmega328)
+#get_board_id(board_id uno atmega328)
+arduino_cmake_project(deer-hunter BOARD_NAME pro BOARD_CPU 16MHzatmega328)
 
 include_directories(
     ${CMAKE_BINARY_DIR}/src
@@ -42,5 +43,5 @@ add_arduino_executable(deer-hunter
     pcm.c
     sample.h)
 
-set_target_upload_port(deer-hunter /dev/tty.usbmodem1421)
-#set_target_upload_port(deer-hunter /dev/cu.usbserial-A601LIRK)
+#set_target_upload_port(deer-hunter /dev/tty.usbmodem1421)
+set_target_upload_port(deer-hunter /dev/cu.usbserial-A601LIRK)

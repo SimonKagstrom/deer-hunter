@@ -5,5 +5,6 @@ cmake_minimum_required(VERSION 2.8)
 #  Setup Project                                                     #
 #====================================================================#
 project(DeerHunter C CXX)
+set (ARDUINO_1_5 True)
 
 add_subdirectory(src)
