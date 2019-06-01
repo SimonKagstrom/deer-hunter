@@ -38,7 +38,7 @@
 #include "WProgram.h"
 #endif
 
-#include "PCM.h"
+#include "pcm.h"
 
 /*
  * The audio data needs to be unsigned, 8-bit, 8000 Hz, and small enough
