@@ -10,6 +10,7 @@
 enum
 {
 	MOTION_DETECTOR_TRIGGER_PIN = 2,
+	SPEAKER_GND_PIN = 10,
 };
 
 class DeerHunter
@@ -152,6 +153,8 @@ void setup(void)
 	Serial.begin(9600);
 	pinMode(MOTION_DETECTOR_TRIGGER_PIN, INPUT);
 	pinMode(LED_BUILTIN, OUTPUT);
+	pinMode(SPEAKER_GND_PIN, OUTPUT);
+	digitalWrite(SPEAKER_GND_PIN, LOW);
 
 	dh = new DeerHunter();
 
