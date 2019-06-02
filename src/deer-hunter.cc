@@ -74,7 +74,10 @@ public:
 			time = 0;
 		} while (state == curState);
 
-		sleep(2000);
+		digitalWrite(LED_BUILTIN, HIGH);
+		sleep(50);
+		digitalWrite(LED_BUILTIN, LOW);
+		sleep(1950);
 	}
 
 
@@ -148,6 +151,7 @@ void setup(void)
 {
 	Serial.begin(9600);
 	pinMode(MOTION_DETECTOR_TRIGGER_PIN, INPUT);
+	pinMode(LED_BUILTIN, OUTPUT);
 
 	dh = new DeerHunter();
 
