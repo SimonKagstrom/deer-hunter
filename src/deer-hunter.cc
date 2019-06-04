@@ -158,7 +158,7 @@ void setup(void)
 
 	dh = new DeerHunter();
 
-	attachInterrupt(digitalPinToInterrupt(MOTION_DETECTOR_TRIGGER_PIN), onMotionInterrupt, CHANGE);
+	attachInterrupt(digitalPinToInterrupt(MOTION_DETECTOR_TRIGGER_PIN), onMotionInterrupt, HIGH);
 }
 
 ISR(WDT_vect)
