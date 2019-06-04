@@ -45,8 +45,8 @@ public:
 			m_roy = !m_roy;
 			if (m_roy)
 				startPlayback(roy, sizeof(roy));
-//			else
-//				startPlayback(moa, sizeof(moa));
+			else
+				startPlayback(moa, sizeof(moa));
 
 			m_motion = false;
 			setState(STATE_WAIT);
