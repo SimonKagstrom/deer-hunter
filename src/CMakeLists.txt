@@ -48,4 +48,4 @@ add_arduino_executable(deer-hunter
     sample.h)
 
 #set_target_upload_port(deer-hunter /dev/tty.usbmodem1421)
-set_target_upload_port(deer-hunter /dev/cu.usbserial-A601LIRK)
+set_target_upload_port(deer-hunter /dev/ttyUSB0)
